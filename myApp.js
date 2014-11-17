@@ -1,12 +1,12 @@
 angular.module('myApp', [])
 	.filter('myFilter', function(){
 		'use strict';
-		return function(problemsList, filters) {
+		return function(problemsList, selectedTags) {
 			var tempProblems = [];
 			angular.forEach(problemsList, function(problem){
-				angular.forEach(filters, function(filter){
-					var index = problem.tags.indexOf(filter);
-					if (tempProblems[tempProblems.length - 1] != problem && index >= 0) {
+				angular.forEach(problem.tags, function(tag){
+					var index = selectedTags.indexOf(tag);
+					if (tempProblems[tempProblems.length - 1] != problem && index > -1) {
 						tempProblems.push(problem);
 					}
 				});

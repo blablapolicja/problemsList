@@ -8,15 +8,15 @@
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="main.css">
 </head>
-<body ng-controller="mainController">
+<body ng-controller="mainController" ng-init="checkAll()">
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-4">
 				<h3>Filter</h3>
 				<ul class="list-group">
-					<li class="list-group-item" ng-repeat="filter in filters">
+					<li class="list-group-item" ng-repeat="tag in tags">
 						<label>
-							<input type="checkbox" ng-model="filter.checked"> {{filter.name}}
+							<input type="checkbox" ng-click="toggleSelection(tag, selectedTags)" ng-checked="selectedTags.indexOf(tag) > -1"> {{tag}}
 						</label>
 					</li>
 				</ul>
@@ -25,10 +25,10 @@
 				<form role="form">
 					<h4>Add new problem</h4>
 					<input type="text" class="form-control" placeholder="Name" id="name" ng-model="name">
-					<label ng-repeat="filter in filters">
-						<input type="checkbox" ng-click="toggleSelection(filter.name)" ng-checked="selection.indexOf(filter.name) > -1"> {{filter.name}}
+					<label ng-repeat="tag in tags">
+						<input type="checkbox" ng-click="toggleSelection(tag, selection)" ng-checked="selection.indexOf(tag) > -1"> {{tag}}
 					</label>
-					<button class="btn btn-success" ng-click="addProblem()" ng-disabled="name.length < 1; selection.length < 1">Add</button>
+					<button class="btn btn-success" ng-click="addProblem()" ng-disabled="name.length < 1 || selection.length < 1">Add</button>
 				</form>
 			</div>
 			<div class="col-md-8">
@@ -43,7 +43,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="problem in problemsList | myFilter: filters">
+						<tr ng-repeat="problem in problemsList | myFilter: selectedTags">
 							<td>{{$index + 1}}</td>
 							<td>{{problem.id}}</td>
 							<td>{{problem.name}}</td>
